@@ -5,18 +5,18 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { userAuth } from '../../recoil/atom';
+import { authenticatedUserAtom, } from '../../recoil/atom';
 import { User } from '../../types/user';
 import './RegisterForm.css';
 
 const RegisterForm: React.FC = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<User>({ criteriaMode: "all" });
-    const [auth, setAuth] = useRecoilState(userAuth);
+    const [authenticatedUser, setauthenticatedUser] = useRecoilState(authenticatedUserAtom);
     const [isError, setIsError] = useState(false);
 
     const onSubmit = async (data: User) => {
         await axios.post('http://localhost:3001/users', data).then(res => {
-            setAuth({
+            setauthenticatedUser({
                 isAuthenticated: true,
                 user: res.data
             })
@@ -28,7 +28,7 @@ const RegisterForm: React.FC = () => {
         return <Navigate to='/error' />
     }
 
-    if (auth.isAuthenticated) {
+    if (authenticatedUser.isAuthenticated) {
         return <Navigate to='/tweets' />
     }
 

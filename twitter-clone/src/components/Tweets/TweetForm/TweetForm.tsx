@@ -2,18 +2,18 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import _ from "lodash";
 import { Tweet } from "../../../types/tweet";
 import './TweetForm.css';
-import _ from "lodash";
-import { Navigate } from "react-router-dom";
-import { refresh, tweetsList, userAuth } from "../../../recoil/atom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { authenticatedUserAtom, refreshAtom, tweetsListAtom } from "../../../recoil/atom";
 
 
 const TweetForm: React.FC = () => {
-    const { user } = useRecoilValue(userAuth);
-    const setTweets = useSetRecoilState(tweetsList);
-    const setShouldRefresh = useSetRecoilState(refresh);
+    const { user } = useRecoilValue(authenticatedUserAtom);
+    const setTweets = useSetRecoilState(tweetsListAtom);
+    const setShouldRefresh = useSetRecoilState(refreshAtom);
     const [isError, setIsError] = useState(false);
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<Tweet>({

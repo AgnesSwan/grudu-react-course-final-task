@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './LoginForm.css';
+import _ from 'lodash';
+import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Link, Navigate } from 'react-router-dom';
 import { ErrorMessage } from '@hookform/error-message';
+import './LoginForm.css';
 import { User } from '../../types/user';
-import { userAuth } from '../../recoil/atom';
-import _ from 'lodash';
-import { useRecoilState } from 'recoil';
-
-
+import { authenticatedUserAtom } from '../../recoil/atom';
 
 const LoginForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<User>({ criteriaMode: "all" });
-  const [auth, setAuth] = useRecoilState(userAuth)
+  const [authenticatedUser, setAuthenticatedUser] = useRecoilState(authenticatedUserAtom)
   const [isError, setIsError] = useState(false);
   const [isError404, setIsError404] = useState(false);
 
@@ -22,7 +20,7 @@ const LoginForm: React.FC = () => {
       const res = await axios.get('http://localhost:3001/users/' + id);
       const user = res.data;
       if (user && user.password === password) {
-        setAuth({
+        setAuthenticatedUser({
           isAuthenticated: true,
           user: user
         })
@@ -54,7 +52,7 @@ const LoginForm: React.FC = () => {
     checkAuth(data.id, data.password)
   }
 
-  if (auth.isAuthenticated) {
+  if (authenticatedUser.isAuthenticated) {
     return <Navigate to='/tweets' />
   }
 

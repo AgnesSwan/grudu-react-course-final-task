@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { Tweet } from '../types/tweet';
-import { UserAuth } from '../types/user';
+import { AuthenticatedUser, User } from '../types/user';
 
 export const defaultUser = {
     id: '',
@@ -9,28 +9,37 @@ export const defaultUser = {
     password: '',
 }
 
-
-const userAuthDefault = {
+const defaultAuthenticatedUser = {
     isAuthenticated: false,
     user: defaultUser
 }
 
-export const userAuth = atom<UserAuth>({
+export const authenticatedUserAtom = atom<AuthenticatedUser>({
     key: 'userAuth',
-    default: userAuthDefault
+    default: defaultAuthenticatedUser
 })
 
-export const usersAtom = atom({
-    key: 'users',
-    default: []
-});
+export const userInfoAtom  = atom<User>({
+    key: 'userInfo',
+    default: defaultUser
+})
 
-export const refresh = atom({
+export const refreshAtom = atom({
     key: 'refresh',
     default: false
 });
 
-export const tweetsList = atom<Tweet[]>({
+export const tweetsListAtom = atom<Tweet[]>({
     key: 'tweetsList',
     default: []
 });
+
+export const ErrorAtom = atom<boolean>({
+    key: 'error',
+    default: false
+}); 
+
+export const Error404Atom = atom<boolean>({
+    key: 'error404',
+    default: false
+}); 

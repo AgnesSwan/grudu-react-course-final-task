@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { userInfoAtom } from '../../../recoil/atom';
 import { Tweet } from '../../../types/tweet';
 import { User } from '../../../types/user';
-import { getUser } from '../../../utils/functions';
+import { getUser } from '../../../utils/utils';
 import './SingleTweet.css';
 
 interface SingleTweetProps {
@@ -9,7 +11,7 @@ interface SingleTweetProps {
 };
 
 const SingleTweet: React.FC<SingleTweetProps> = ({ tweet }) => {
-    const [userInfo, setUserInfo] = useState({});
+    const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
     useEffect(() => {
         getUser(tweet.author_id).then(res => {

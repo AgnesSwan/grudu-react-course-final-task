@@ -6,7 +6,7 @@ export interface User {
 }
 
 
-export interface UserAuth {
+export interface AuthenticatedUser {
     user: User;
     isAuthenticated: boolean;
 }

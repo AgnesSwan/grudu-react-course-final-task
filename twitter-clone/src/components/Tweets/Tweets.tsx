@@ -2,16 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { refresh, tweetsList, userAuth } from "../../recoil/atom";
-import { getInitials } from "../../utils/functions";
+import { authenticatedUserAtom, refreshAtom, tweetsListAtom } from "../../recoil/atom";
+import { getInitials } from "../../utils/utils";
 import SingleTweet from "./SingleTweet/SingleTweet";
 import TweetForm from "./TweetForm/TweetForm";
 import './Tweets.css';
 
 const Tweets: React.FC = () => {
-    const [tweets, setTweets] = useRecoilState(tweetsList);
-    const [shouldRefresh, setShouldRefresh] = useRecoilState(refresh);
-    const { user } = useRecoilValue(userAuth);
+    const [tweets, setTweets] = useRecoilState(tweetsListAtom);
+    const [shouldRefresh, setShouldRefresh] = useRecoilState(refreshAtom);
+    const { user } = useRecoilValue(authenticatedUserAtom);
     const [initials, setInitials] = useState('');
     const [isError, setIsError] = useState(false);
 
