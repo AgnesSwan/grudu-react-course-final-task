@@ -6,10 +6,10 @@ import OtherError from './components/ErrorPage/OtherError';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegisterForm from './components/RegisterForm/RegisterForm';
 import Tweets from './components/Tweets/Tweets';
-import { userAuth } from './recoil/atom';
+import { authenticatedUserAtom } from './recoil/atom';
 
 function App() {
-  const { isAuthenticated } = useRecoilValue(userAuth);
+  const { isAuthenticated } = useRecoilValue(authenticatedUserAtom);
   return (
     <Routes>
       <Route
@@ -28,7 +28,7 @@ function App() {
         path="/error"
         element={<OtherError />}
       />
-      {isAuthenticated && <Route
+            {isAuthenticated && <Route
         path="/tweets"
         element={<Tweets />}
       />

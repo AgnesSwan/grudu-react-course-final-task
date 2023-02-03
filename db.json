@@ -19,6 +19,11 @@
       "id": "Vzh5B6f",
       "author_id": "johnsmith",
       "text": "bye"
+    },
+    {
+      "id": "gqyQn2A",
+      "author_id": "johnsmith",
+      "text": "s"
     }
   ],
   "users": [
@@ -26,7 +31,7 @@
       "id": "johnsmith",
       "name": "John Smith",
       "email": "johnsmith@gmail.com",
-      "password": "abc"
+      "password": "abcdefghi"
     },
     {
       "id": "carlanotarobot",

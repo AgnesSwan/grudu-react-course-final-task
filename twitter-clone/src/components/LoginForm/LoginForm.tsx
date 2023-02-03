@@ -1,58 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import _ from 'lodash';
-import { useRecoilState } from 'recoil';
-import axios from 'axios';
 import { Link, Navigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import _ from 'lodash';
 import { ErrorMessage } from '@hookform/error-message';
-import './LoginForm.css';
 import { User } from '../../types/user';
-import { authenticatedUserAtom } from '../../recoil/atom';
+import { authenticatedUserAtom, Error404Atom, ErrorAtom } from '../../recoil/atom';
+import { useAuth } from '../../utils/authentication-hook';
+import './LoginForm.css';
 
 const LoginForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<User>({ criteriaMode: "all" });
-  const [authenticatedUser, setAuthenticatedUser] = useRecoilState(authenticatedUserAtom)
-  const [isError, setIsError] = useState(false);
-  const [isError404, setIsError404] = useState(false);
-
-  async function checkAuth(id: string, password: string) {
-    try {
-      const res = await axios.get('http://localhost:3001/users/' + id);
-      const user = res.data;
-      if (user && user.password === password) {
-        setAuthenticatedUser({
-          isAuthenticated: true,
-          user: user
-        })
-      }
-      else {
-        setIsError404(true);
-        setTimeout(() => {
-          setIsError404(false);
-        }, 3000);
-      }
-    }
-    catch (error: any) {
-      if (error.response.status === 404) {
-        setIsError404(true);
-        setTimeout(() => {
-          setIsError404(false);
-        }, 3000);
-      }
-      else {
-        setIsError(true);
-        setTimeout(() => {
-          setIsError(false);
-        }, 3000);
-      }
-    }
-  }
+  const { isAuthenticated } = useRecoilValue(authenticatedUserAtom)
+  const isError = useRecoilValue(ErrorAtom)
+  const isError404 = useRecoilValue(Error404Atom)
+  const authentication = useAuth();
 
   const onSubmit = async (data: User) => {
-    checkAuth(data.id, data.password)
+    authentication.checkAuth(data.id, data.password)
   }
 
-  if (authenticatedUser.isAuthenticated) {
+  if (isAuthenticated) {
     return <Navigate to='/tweets' />
   }
 
@@ -82,7 +50,9 @@ const LoginForm: React.FC = () => {
         />
         <input
           type='password'
-          {...register("password", { required: 'This is required' })}
+          {...register("password", {
+            minLength: { value: 8, message: 'Password is too short' }, maxLength: { value: 256, message: 'Password is too long' }, required: 'This is required'
+          })} 
           placeholder='Password'
         />
         <ErrorMessage
@@ -96,7 +66,6 @@ const LoginForm: React.FC = () => {
               : null;
           }}
         />
-
         {isError404 && <p className='invalid-input'>Invalid email or password</p>}
         <div className='button-login'>
           <button type='submit'>Login</button>

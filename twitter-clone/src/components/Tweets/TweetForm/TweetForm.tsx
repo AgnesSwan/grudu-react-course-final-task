@@ -1,14 +1,13 @@
-import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
+import _ from "lodash";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import _ from "lodash";
+import { ErrorMessage } from "@hookform/error-message";
 import { Tweet } from "../../../types/tweet";
-import './TweetForm.css';
 import { authenticatedUserAtom, refreshAtom, tweetsListAtom } from "../../../recoil/atom";
-
+import './TweetForm.css';
 
 const TweetForm: React.FC = () => {
     const { user } = useRecoilValue(authenticatedUserAtom);

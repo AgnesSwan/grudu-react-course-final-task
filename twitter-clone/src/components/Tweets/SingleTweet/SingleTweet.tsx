@@ -14,7 +14,9 @@ const SingleTweet: React.FC<SingleTweetProps> = ({ tweet }) => {
     const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
     useEffect(() => {
-        getUser(tweet.author_id).then(res => {
+        //from getUser we receive Promise
+        getUser(tweet.author_id)
+        .then(res => {
             setUserInfo(res)
         }).catch(error => {
             console.log(error);

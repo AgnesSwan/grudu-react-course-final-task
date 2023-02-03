@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authenticatedUserAtom, refreshAtom, tweetsListAtom } from "../../recoil/atom";
@@ -15,7 +15,7 @@ const Tweets: React.FC = () => {
     const [initials, setInitials] = useState('');
     const [isError, setIsError] = useState(false);
 
-    const getAllTweets = async () => {
+    const getAllTweets = useCallback(async () => {
         try {
             const result = await axios.get('http://localhost:3001/tweets');
             setTweets(result.data);
@@ -23,7 +23,8 @@ const Tweets: React.FC = () => {
         catch (err) {
             setIsError(true)
         }
-    }
+      }, []);
+  
     
     useEffect(() => {
         const letters = getInitials(user.name)
